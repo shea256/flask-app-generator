@@ -6,7 +6,7 @@ Next, make sure you update the virtualenvwrapper_path and hosts_path at the top 
 
 Great, now you're good to go.
 
-To create a Flask app with hosting on github and heroku:
+To autogenerate a Flask app with twitter bootstrap design and hosting on github and heroku:
 
 	python generator.py --githubuser=<githubuser> create APP_NAME
 
