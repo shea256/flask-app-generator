@@ -2,7 +2,7 @@
 
 First, make sure you have python, pip, git, the heroku toolbelt, virtualenv, and virtualenvwrapper.
 
-To create a Flask app with hosting on github and heroku:
+To autogenerate a Flask app with twitter bootstrap design and hosting on github and heroku:
 
 	python generator.py --githubuser=<githubuser> create APP_NAME
 
