@@ -1,7 +1,19 @@
 
+# How to autogenerate Flask apps
+
+First, make sure you have python, pip, git, the heroku toolbelt, virtualenv, and virtualenvwrapper.
+
 To create a Flask app with hosting on github and heroku:
 
 	python generator.py --githubuser=<githubuser> create APP_NAME
+
+Options:
+
++'githubuser='
++'githubproject='
++'herokuapp='
++'novirtualenvwrapper'
++'useexistingherokuapp'
 
 To add a Facebook login system to your app:
 
