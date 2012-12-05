@@ -2,6 +2,10 @@
 
 First, make sure you have python, pip, git, the heroku toolbelt, virtualenv, and virtualenvwrapper.
 
+Next, make sure you update the virtualenvwrapper_path and hosts_path at the top of the file.
+
+Great, now you're good to go.
+
 To create a Flask app with hosting on github and heroku:
 
 	python generator.py --githubuser=<githubuser> create APP_NAME

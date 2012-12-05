@@ -292,6 +292,10 @@ FILEDATA_404_HTML = """{% extends "base.html" %}
   <p><a href="{{ url_for('index') }}">home</a></p>
 {% endblock %}"""
 
+def git_add_and_commit():
+	os.system('git add .')
+	os.system('git commit -m "first commit"')
+
 #----------------------------------------
 # CREATE APP
 #----------------------------------------
@@ -377,10 +381,9 @@ def create_app(app_name, filedata,
 			f.write(filedata['404template'])
 
 	#----------------------------------------
-	# git commit files
+	# git add, commit, and add origin
 	#----------------------------------------
-	os.system('git add .')
-	os.system('git commit -m "first commit"')
+	git_add_and_commit()
 	if github_username and github_project:
 		os.system('git remote add origin https://github.com/' + github_username + '/' + github_project + '.git')
 
@@ -421,6 +424,8 @@ def add_to_app(app_dir, virtualenv_name, addon, data={}):
 			with open("templates/base.html", 'w') as f:
 				f.write(filedata)
 
+			git_add_and_commit()
+
 			print 'fblogin installed! start up your app and visit http://a.' + deployment_url + ':5000 to see it in action'
 		else:
 			usage(method='addon', addon='fblogin')
@@ -442,6 +447,10 @@ def add_to_app(app_dir, virtualenv_name, addon, data={}):
 
 			with open("models.py", 'w') as f:
 				f.write(models_code)
+
+			git_add_and_commit()
+
+			print 'mongodb and monegoengine for fblogin installed! try logging in, then check the database for the user record.'
 		else:
 			usage(method='addon', addon='mongodb_for_fblogin')
 			sys.exit()
