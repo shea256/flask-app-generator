@@ -1,18 +1,18 @@
 # How to autogenerate Flask apps
 
-# Required packages
+## Required packages
 
 + python
 + pip
 + git
 
-# Optional packages
+## Optional packages
 
 + heroku toolbelt
 + virtualenv
 + virtualenvwrapper
 
-# Help
+## Help
 
 **usage:** build_app.py [-h] [--githubuser GITHUB_USER] [--githubrepo GITHUB_REPO]
                     [--herokuapp HEROKU_APP] [--venvname VIRTUALENV_NAME]
