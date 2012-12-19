@@ -1,29 +1,44 @@
 # How to autogenerate Flask apps
 
-First, make sure you have python, pip, git, the heroku toolbelt, virtualenv, and virtualenvwrapper.
+> Required packages:
 
-Next, make sure you update the virtualenvwrapper_path and hosts_path at the top of the file.
++ python
++ pip
++ git
 
-Great, now you're good to go.
+> Optional packages:
 
-To autogenerate a Flask app with twitter bootstrap design and hosting on github and heroku:
++ heroku toolbelt
++ virtualenv
++ virtualenvwrapper
 
-	python generator.py --githubuser=<githubuser> create APP_NAME
+> Help
 
-Options:
+usage: build_app.py [-h] [--githubuser GITHUB_USER] [--githubrepo GITHUB_REPO]
+                    [--herokuapp HEROKU_APP] [--venvname VIRTUALENV_NAME]
+                    [--venvwrapperpath VIRTUALENVWRAPPER_PATH] [--push]
+                    appname
 
-+ --githubuser=
-+ --githubproject=
-+ --herokuapp=
-+ --novirtualenvwrapper
-+ --useexistingherokuapp
+Autogenerate a Flask app
 
-To add a Facebook login system to your app:
+positional arguments:
+  appname               the name of the app to be created
 
-	sudo python generator.py addon <app_dir> fblogin <fb_appid> <fb_appsecret> <deployment_url>
-
-To store your Facebook user data in mongodb:
-
-	python generator.py addon <app_dir> mongodb_for_fblogin <db_name> <db_user> <db_pw> <db_hostaddr>
-
-More apps coming soon.
+optional arguments:
+  -h, --help            show this help message and exit
+  --githubuser GITHUB_USER
+                        the name of the github user that will be hosting the
+                        app
+  --githubrepo GITHUB_REPO
+                        the name of the remote github repo that will be
+                        hosting the app
+  --herokuapp HEROKU_APP
+                        the name that the heroku app will be renamed to if it
+                        has not yet been taken
+  --venvname VIRTUALENV_NAME
+                        the name of the virtualenv for the app
+  --venvwrapperpath VIRTUALENVWRAPPER_PATH
+                        the path to the file virtualenvwrapper.sh (turns on
+                        virtualenvwrapper when specified)
+  --push                automatically push to github and heroku when app has
+                        been created
