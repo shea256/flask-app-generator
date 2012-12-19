@@ -1,4 +1,4 @@
-# How to autogenerate Flask apps
+# Flask App Generator
 
 ## Required packages
 
