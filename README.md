@@ -14,7 +14,7 @@
 
 ## Help
 
-**usage:** build_app.py [-h] [--githubuser GITHUB_USER] [--githubrepo GITHUB_REPO]
+**usage:** generate.py [-h] [--githubuser GITHUB_USER] [--githubrepo GITHUB_REPO]
                     [--herokuapp HEROKU_APP] [--venvname VIRTUALENV_NAME]
                     [--venvwrapperpath VIRTUALENVWRAPPER_PATH] [--push]
                     appname
