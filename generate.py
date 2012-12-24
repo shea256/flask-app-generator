@@ -133,8 +133,10 @@ def main():
 	# push to github and heroku
 	#----------------------------------------
 	if args.push:
-		os.system('git push origin master')
-		os.system('git push heroku master; heroku open')
+		if args.github_user and args.github_repo:
+			os.system('git push origin master')
+		if args.heroku_app:
+			os.system('git push heroku master; heroku open')
 
 	#----------------------------------------
 	# print success message
