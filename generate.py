@@ -7,7 +7,7 @@ jquery_url = 'http://code.jquery.com/jquery-1.8.3.js'
 jquerymin_url = 'http://code.jquery.com/jquery-1.8.3.min.js'
 bootstrapjs_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
 bootstrapjsmin_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
-bootstrapcss_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css'
+bootstrapcss_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
 
 def git_add_and_commit(message):
 	os.system('git add .')
