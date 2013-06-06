@@ -1,13 +1,7 @@
 import os
 import binascii
 import argparse
-
-favicon_url = 'http://twitter.github.io/bootstrap/assets/ico/favicon.png'
-jquery_url = 'http://code.jquery.com/jquery-1.8.3.js'
-jquerymin_url = 'http://code.jquery.com/jquery-1.8.3.min.js'
-bootstrapjs_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
-bootstrapjsmin_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
-bootstrapcss_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
+from settings import *
 
 def git_add_and_commit(message):
 	os.system('git add .')
@@ -79,10 +73,10 @@ def configure_heroku(heroku_app):
 	os.system('heroku apps:rename ' + heroku_app)
 
 def configure_virtualenvwrapper(app_name, virtualenvwrapper_path):
-	os.system('source ' + virtualenvwrapper_path + '; mkvirtualenv ' + app_name + '; workon ' + app_name + '; sudo pip install Flask; pip freeze > requirements.txt')
+	os.system('source ' + virtualenvwrapper_path + '; mkvirtualenv ' + app_name + '; workon ' + app_name + '; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
 
 def configure_virtualenv(app_name):
-	os.system('virtualenv venv --distribute; source venv/bin/activate; sudo pip install Flask; pip freeze > requirements.txt')
+	os.system('virtualenv venv --distribute; source venv/bin/activate; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
 
 def main():
 	#----------------------------------------
@@ -90,13 +84,16 @@ def main():
 	#----------------------------------------
 	parser = argparse.ArgumentParser(description='Autogenerate a Flask app')
 	parser.add_argument('appname', help='the name of the app to be created')
-	parser.add_argument('--githubuser', dest='github_user', help='the name of the github user that will be hosting the app')
+	#parser.add_argument('--githubuser', dest='github_user', help='the name of the github user that will be hosting the app')
 	parser.add_argument('--githubrepo', dest='github_repo', help='the name of the remote github repo that will be hosting the app')
 	parser.add_argument('--herokuapp', dest='heroku_app', help='the name that the heroku app will be renamed to if it has not yet been taken')
 	parser.add_argument('--venvname', dest='virtualenv_name', help='the name of the virtualenv for the app')
-	parser.add_argument('--venvwrapperpath', dest='virtualenvwrapper_path', help='the path to the file virtualenvwrapper.sh (turns on virtualenvwrapper when specified)')
+	#parser.add_argument('--venvwrapperpath', dest='virtualenvwrapper_path', help='the path to the file virtualenvwrapper.sh (turns on virtualenvwrapper when specified)')
 	parser.add_argument('--push', dest='push', help='automatically push to github and heroku when app has been created', action='store_true')
 	args = parser.parse_args()
+
+	args.github_user = github_user
+	args.virtualenvwrapper_path = virtualenvwrapper_path
 
 	#----------------------------------------
 	# create app files
