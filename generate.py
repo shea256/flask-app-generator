@@ -162,8 +162,6 @@ app.config.update(
 
 app.config["SECRET_KEY"] = '""" + binascii.b2a_hex(os.urandom(24)) + """'
 
-### marker for flask app generator - keep this line
-
 #----------------------------------------
 # controllers
 #----------------------------------------
@@ -196,11 +194,12 @@ if __name__ == "__main__":
 			raise Exception('Rendering base_template requires the "app_name" keyword argument.')
 		else:
 			app_name = kwargs['app_name']
-			return """<!DOCTYPE html>
+			return """{% set site_name = \"""" + app_name + """\" %}
+<!DOCTYPE html>
 <html lang="en">
   <head>
 	{% block head %}
-	<title>""" + app_name + """{% block title %}{% endblock %}</title>
+	<title>{{ site_name }}{% block title %}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -211,7 +210,7 @@ if __name__ == "__main__":
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content=""/>
 	<meta property="og:image" content="" />
-	<meta property="og:site_name" content='""" + app_name + """'/>
+	<meta property="og:site_name" content='{{ site_name }}'/>
 	<meta property="og:description" content=""/>
 
 	<link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
@@ -233,7 +232,7 @@ if __name__ == "__main__":
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-			  <a class="brand" href="/">""" + app_name + """</a>
+			  <a class="brand" href="/">{{ site_name }}</a>
 			  <div class="nav-collapse">
 				<ul class="nav">
 				</ul>
@@ -258,7 +257,7 @@ if __name__ == "__main__":
 
 		{% block footer %}
 		<footer class="footer">
-			<p>&copy; """ + app_name + """</p>
+			<p>&copy; {{ site_name }}</p>
 		</footer>
 		{% endblock %}
 	</div>
@@ -271,7 +270,7 @@ if __name__ == "__main__":
 			app_name = kwargs['app_name']
 			return """{% extends "base.html" %}
 {% block content %}
-  <p>Welcome to """ + app_name + """!</p>
+  <p>Welcome to {{ site_name }}!</p>
 {% endblock %}"""
 	elif filename == '404_template':
 		return """{% extends "base.html" %}
