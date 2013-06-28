@@ -7,47 +7,30 @@ def git_add_and_commit(message):
 	os.system('git add .')
 	os.system('git commit -m "' + message + '"')
 
+def create_files(filenames, app_name):
+	for filename in filenames:
+		with open(filename, 'w') as f:
+			f.write(render_filedata(filename, app_name))
+
 def create_app_files(app_name):
+	if not app_name:
+		raise Exception('App name required.')
+
 	#----------------------------------------
-	# create directory
+	# create and init directory
 	#----------------------------------------
 	os.mkdir(app_name)
 	os.chdir(app_name)
-
-	#----------------------------------------
-	# git files
-	#----------------------------------------
 	os.system('git init')
-	os.system('touch README.md')
-
-	with open('.gitignore', 'w') as f:
-		f.write(render_filedata('gitignore'))
-
-	#----------------------------------------
-	# heroku files
-	#----------------------------------------
-	with open('Procfile', 'w') as f:
-		f.write(render_filedata('procfile'))
-
-	#----------------------------------------
-	# python files
-	#----------------------------------------
-	with open('app.py', 'w') as f:
-		f.write(render_filedata('main_app'))
-
-	#----------------------------------------
-	# templates
-	#----------------------------------------
 	os.mkdir('templates')
 
-	with open('templates/base.html', 'w') as f:
-		f.write(render_filedata('base_template', app_name=app_name))
+	#----------------------------------------
+	# create files
+	#----------------------------------------
 
-	with open('templates/index.html', 'w') as f:
-		f.write(render_filedata('index_template', app_name=app_name))
-
-	with open('templates/404.html', 'w') as f:
-		f.write(render_filedata('404_template'))
+	filenames = ['README.md', '.gitignore', 'Procfile', 'app.py',
+		'templates/base.html', 'templates/index.html', 'templates/404.html']
+	create_files(filenames, app_name)
 
 	#----------------------------------------
 	# static files
@@ -140,147 +123,31 @@ def main():
 	#----------------------------------------
 	print "\nYour app has been created!"
 
-def render_filedata(filename, **kwargs):
-	if filename == 'gitignore':
-		return """*.pyc\nvenv\n*~\n.DS_Store\nignore"""
-	elif filename == 'procfile':
-		return """web: python app.py"""
-	elif filename == 'main_app':
-		return """import os
-from flask import Flask, render_template, send_from_directory, Response, url_for, request
-import json
-
-#----------------------------------------
-# initialization
-#----------------------------------------
-
-app = Flask(__name__)
-
-app.config.update(
-	DEBUG = True,
-)
-
-app.config["SECRET_KEY"] = '""" + binascii.b2a_hex(os.urandom(24)) + """'
-
-#----------------------------------------
-# controllers
-#----------------------------------------
-
-@app.route("/")
-def index():
-	return render_template('index.html')
-
-#----------------------------------------
-# handlers
-#----------------------------------------
-
-@app.route('/favicon.ico')
-def favicon():
-	return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
-
-@app.errorhandler(404)
-def page_not_found(e):
-	return render_template('404.html'), 404
-
-#----------------------------------------
-# launch
-#----------------------------------------
-
-if __name__ == "__main__":
-	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', port=port)"""
-	elif filename == 'base_template':
-		if 'app_name' not in kwargs:
-			raise Exception('Rendering base_template requires the "app_name" keyword argument.')
-		else:
-			app_name = kwargs['app_name']
-			return """{% set site_name = \"""" + app_name + """\" %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-	{% block head %}
-	<title>{{ site_name }}{% block title %}{% endblock %}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<meta name="author" content="">
-	<meta charset="utf-8">
-
-	<meta property="og:title" content=""/>
-	<meta property="og:type" content="website"/>
-	<meta property="og:url" content=""/>
-	<meta property="og:image" content="" />
-	<meta property="og:site_name" content='{{ site_name }}'/>
-	<meta property="og:description" content=""/>
-
-	<link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-	<style> body { padding-top: 60px; } </style>
-
-	<!-- SUPPORT FOR IE6-8 OF HTML5 ELEMENTS -->
-	<!--[if lt IE 9]>
-		  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-	{% endblock %}
-  </head>
-
-  <body>
-
-	{% block navbar %}
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-			  <a class="brand" href="/">{{ site_name }}</a>
-			  <div class="nav-collapse">
-				<ul class="nav">
-				</ul>
-				{% block navbar_right %}
-				<ul class="nav pull-right">
-					<li><a href="/">Home</a></li>
-				</ul>
-				{% endblock %}
-			  </div><!--/.nav-collapse -->
-			</div>
-		  </div>
-	</div>
-	{% endblock %}
-
-	<div class="container page">
-		<div class="content">
-		  {% block content %}
-		  {% endblock %}
-		</div>
-
-		<hr>
-
-		{% block footer %}
-		<footer class="footer">
-			<p>&copy; {{ site_name }}</p>
-		</footer>
-		{% endblock %}
-	</div>
-  </body>
-</html>"""
-	elif filename == 'index_template':
-		if 'app_name' not in kwargs:
-			raise Exception('Rendering index_template requires the "app_name" keyword argument.')
-		else:
-			app_name = kwargs['app_name']
-			return """{% extends "base.html" %}
-{% block content %}
-  <p>Welcome to {{ site_name }}!</p>
-{% endblock %}"""
-	elif filename == '404_template':
-		return """{% extends "base.html" %}
-{% block title %} - Page Not Found{% endblock %}
-{% block content %}
-  <h1>Page Not Found</h1>
-  <p><a href="{{ url_for('index') }}">home</a></p>
-{% endblock %}"""
-	else:
+def load_resource(filename):
+	resource_path = '../resources/'
+	try:
+		with open(resource_path + filename, 'r') as f:
+			filedata = f.read()
+	except:
 		raise Exception('No template found with that name.')
+	else:
+		return filedata
+
+def render_filedata(filename, app_name):
+	if filename == 'app.py':
+		filedata = load_resource(filename)
+		filedata = filedata.replace("SECRET_KEY = ''", "SECRET_KEY = '" + binascii.b2a_hex(os.urandom(24)) + "'")
+		return filedata
+	elif filename == 'templates/base.html':
+		template_vars = """{% set site_name = \"""" + app_name + """\" %}"""
+		filedata = template_vars + load_resource(filename)
+		return filedata
+	elif filename == 'README.md':
+		filedata = load_resource(filename)
+		filedata = filedata.replace('APPLICATION_NAME', str(app_name))
+		return filedata
+	else:
+		return load_resource(filename)
 
 if __name__ == "__main__":
 	main()
