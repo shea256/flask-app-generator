@@ -1,4 +1,4 @@
-# Flask App Generator
+## Flask App Generator
 
 Flask App Generator gives you the power to autogenerate a Flask app in seconds.
 
@@ -15,7 +15,7 @@ Beyond app creation, you'll have the ability to automatically:
 
 (it's like hackathon magic)
 
-Enjoy, and please don't hesitate to provide feedback regarding or contribute to the project.
+Enjoy, and please don't hesitate to contribute to the project or provide feedback.
 
 ### How to Use
 
