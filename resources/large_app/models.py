@@ -2,7 +2,7 @@
 
 """
 import datetime
-from application.core import db
+from [[APP_NAME]].core import db
 
 class User(db.DynamicDocument):
 	created_at = db.DateTimeField(default=datetime.datetime.now, required=True)

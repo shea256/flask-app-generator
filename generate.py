@@ -3,12 +3,55 @@ import binascii
 import argparse
 from settings import *
 
-# create enums
+#---------------------------------------------------------------------
+# Helper functions
+#---------------------------------------------------------------------
+
 def enum(**enums):
 	return type('Enum', (), enums)
 
-App_types = enum(BASIC=1, LARGE=2)
+AppTypes = enum(BASIC=1, LARGE=2)
 
+def random_binascii(n):
+	return binascii.b2a_hex(os.urandom(n))
+
+def make_replacements(filedata, replacements):
+
+	for replacement in replacements:
+		filedata = filedata.replace(replacement[0], replacement[1])
+
+	return filedata
+
+def git_add_and_commit(message):
+	os.system('git add .')
+	os.system('git commit -m "' + message + '"')
+
+def configure_github(github_user, github_repo):
+	os.system('git remote add origin https://github.com/' + github_user + '/' + github_repo + '.git')
+
+def configure_heroku(heroku_app):
+	os.system('heroku create --stack cedar')
+	os.system('heroku apps:rename ' + heroku_app)
+
+def configure_virtualenvwrapper(app_name, virtualenvwrapper_path):
+	os.system('source ' + virtualenvwrapper_path + '; mkvirtualenv ' + app_name + '; workon ' + app_name + '; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
+
+def configure_virtualenv(app_name):
+	os.system('virtualenv venv --distribute; source venv/bin/activate; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
+
+def make_dirs(dirs):
+	for d in dirs:
+		os.makedirs(d)
+
+def curl_files(files):
+	for f in files:
+		src_url = f[0]
+		dest_name = f[1]
+		os.system('curl ' + src_url + ' > ' + dest_name)
+
+#---------------------------------------------------------------------
+# App creator
+#---------------------------------------------------------------------
 
 class AppCreator(object):
 
@@ -16,24 +59,27 @@ class AppCreator(object):
 		self.app_name = app_name
 		self.app_type = app_type
 
+		if app_type == AppTypes.LARGE:
+			self.runserver_filename = 'runserver'
+		else:
+			self.runserver_filename = 'app'
+
 		self.resource_path = '../resources/'
-		self.destination_path = ''
+		self.destination_path = './'
 
-	def create_app(self):
-		self.initialize_app()
-		
-		if self.app_type == App_types.BASIC:
-			self.create_basic_app_files()
-		elif self.app_type == App_types.LARGE:
-			self.create_large_app_files()
-
-	def initialize_app(self):
+	def init_app(self):
 		os.mkdir(self.app_name)
 		os.chdir(self.app_name)
 		os.system('git init')
 
+	def build_app(self):
 		filenames = ['README.md', '.gitignore', 'Procfile']
 		self.create_files(filenames, '')
+		
+		if self.app_type == AppTypes.BASIC:
+			self.create_basic_app_files()
+		elif self.app_type == AppTypes.LARGE:
+			self.create_large_app_files()
 
 	def create_basic_app_files(self):
 		# create python files
@@ -48,9 +94,10 @@ class AppCreator(object):
 		filenames = ['runserver.py']
 		self.create_files(filenames, 'large_app/')
 
-		app_folder = 'application'
-		os.mkdir(app_folder)
-		self.destination_path = app_folder + '/'
+		os.mkdir(self.app_name)
+		self.destination_path = self.app_name + '/'
+
+		self.runserver_filename = 'runserver'
 
 		filenames = ['__init__.py', 'controllers.py', 'core.py',
 			'models.py', 'settings.py']
@@ -84,60 +131,36 @@ class AppCreator(object):
 
 	def render_filedata(self, filename, resource_dir):
 
-		if filename == 'app.py':
-			filedata = self.load_resource(filename, resource_dir)
-			filedata = filedata.replace("SECRET_KEY = ''", "SECRET_KEY = '" + binascii.b2a_hex(os.urandom(24)) + "'")
-			return filedata
-		elif filename == 'base.html':
-			template_vars = """{% set site_name = \"""" + self.app_name + """\" %}"""
-			filedata = template_vars + self.load_resource(filename, resource_dir)
-			return filedata
-		elif filename == 'README.md':
-			filedata = self.load_resource(filename, resource_dir)
-			filedata = filedata.replace('APPLICATION_NAME', str(self.app_name))
-			return filedata
-		else:
-			return self.load_resource(filename, resource_dir)
+		replacements = [
+			('[[SECRET_KEY]]', random_binascii(24)),
+			('[[APP_NAME]]', self.app_name),
+			('[[RUNSERVER_FILENAME]]', self.runserver_filename)
+		]
+
+		filedata = self.load_resource(filename, resource_dir)
+		filedata = make_replacements(filedata, replacements)
+		return filedata
 
 	def grab_static_files(self):
-		print '\n'
+		dirs = ['static/css', 'static/js', 'static/img', 'static/ico']
+		dirs = [(self.destination_path + d) for d in dirs]
+		make_dirs(dirs)
 
-		os.chdir(self.destination_path)
+		files = [
+			(bootstrap_css_url, 'static/css/bootstrap.css'),
+			(bootstrap_responsive_css_url, 'static/css/bootstrap-responsive.css'),
+			(bootstrap_js_url, 'static/js/bootstrap.js'),
+			(bootstrap_js_min_url, 'static/js/bootstrap.min.js'),
+			(jquery_url, 'static/js/jquery.js'),
+			(jquery_min_url, 'static/js/jquery.min.js'),
+			(favicon_url, 'static/ico/favicon.ico'),
+		]
+		files = [(url, self.destination_path + destname) for url, destname in files]
+		curl_files(files)
 
-		os.mkdir('static')
-		os.makedirs('static/css')
-		os.makedirs('static/js')
-		os.makedirs('static/img')
-		os.makedirs('static/ico')
-
-		os.system('curl ' + bootstrap_css_url + ' > static/css/bootstrap.css')
-		os.system('curl ' + bootstrap_responsive_css_url + ' > static/css/bootstrap-responsive.css')
-		os.system('curl ' + bootstrap_js_url + ' > static/js/bootstrap.js')
-		os.system('curl ' + bootstrap_js_min_url + ' > static/js/bootstrap.min.js')
-		os.system('curl ' + jquery_url + ' > static/js/jquery.js')
-		os.system('curl ' + jquery_min_url + ' > static/js/jquery.min.js')
-		os.system('curl ' + favicon_url + ' > static/ico/favicon.ico')
-
-		os.chdir('..')
-
-		print '\n'
-
-def git_add_and_commit(message):
-	os.system('git add .')
-	os.system('git commit -m "' + message + '"')
-
-def configure_github(github_user, github_repo):
-	os.system('git remote add origin https://github.com/' + github_user + '/' + github_repo + '.git')
-
-def configure_heroku(heroku_app):
-	os.system('heroku create --stack cedar')
-	os.system('heroku apps:rename ' + heroku_app)
-
-def configure_virtualenvwrapper(app_name, virtualenvwrapper_path):
-	os.system('source ' + virtualenvwrapper_path + '; mkvirtualenv ' + app_name + '; workon ' + app_name + '; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
-
-def configure_virtualenv(app_name):
-	os.system('virtualenv venv --distribute; source venv/bin/activate; sudo pip install ' + packages_to_pip_install + '; pip freeze > requirements.txt')
+#---------------------------------------------------------------------
+# Main
+#---------------------------------------------------------------------
 
 def main():
 	# parse arguments
@@ -147,7 +170,7 @@ def main():
 	parser.add_argument('--herokuapp', dest='heroku_app', help='the name that the heroku app will be renamed to if it has not yet been taken')
 	parser.add_argument('--venvname', dest='virtualenv_name', help='the name of the virtualenv for the app')
 	parser.add_argument('--push', dest='push', help='automatically push to github and heroku when app has been created', action='store_true')
-	parser.add_argument('--large', dest='app_type', action='store_const', const=App_types.LARGE)
+	parser.add_argument('--large', dest='app_type', action='store_const', const=AppTypes.LARGE)
 	args = parser.parse_args()
 
 	# take in additional arguments from settings
@@ -156,11 +179,14 @@ def main():
 
 	# create app files
 	if not args.app_type:
-		app_creator = AppCreator(args.appname, App_types.BASIC)
+		app_creator = AppCreator(args.appname, AppTypes.BASIC)
 	else:
 		app_creator = AppCreator(args.appname, args.app_type)
 	print ''
-	app_creator.create_app()
+	app_creator.init_app()
+	print ''
+	app_creator.build_app()
+	print '\n'
 
 	# configure github
 	if args.github_user and args.github_repo:
@@ -187,7 +213,6 @@ def main():
 		if args.heroku_app:
 			os.system('git push heroku master; heroku open')
 
-	# print success message
 	print "\nYour app has been created!\n"
 
 if __name__ == "__main__":

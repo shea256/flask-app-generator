@@ -1,4 +1,4 @@
-from application import app
+from [[APP_NAME]] import app
 
 # Put core elements here
 

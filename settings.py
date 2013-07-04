@@ -28,4 +28,3 @@ bootstrap_js_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
 bootstrap_js_min_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
 bootstrap_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
 bootstrap_responsive_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css'
-

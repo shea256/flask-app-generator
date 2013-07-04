@@ -1,1 +1,1 @@
-# APPLICATION_NAME
+# [[APP_NAME]]

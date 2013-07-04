@@ -1,5 +1,5 @@
 import os
-from application import app
+from [[APP_NAME]] import app
 
 def runserver():
 	port = int(os.environ.get('PORT', 5000))
