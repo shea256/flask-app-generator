@@ -8,9 +8,12 @@ Additionally, you have the option of:
 + hooking into a github repo
 + initializing a Heroku application and deploying to it
 
-**(it's like hackathon magic)**
+(it's like hackathon magic)
 
-The application you generate can be laid out as either a 'basic' application, with just a single python file as your command center, or a 'large' application, organized as a package and separated out into distinct, specialized python files.
+The application you generate can be laid out as one of the following:
+
++ a 'basic' application, with just a single python file as your command center
++ a 'large' application, organized as a package and separated out into distinct, specialized python files
 
 ## How to Use
 
