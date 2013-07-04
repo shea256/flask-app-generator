@@ -21,11 +21,11 @@ favicon_url = 'http://twitter.github.io/bootstrap/assets/ico/favicon.png'
 
 # jquery
 jquery_url = 'http://code.jquery.com/jquery-1.8.3.js'
-jquerymin_url = 'http://code.jquery.com/jquery-1.8.3.min.js'
+jquery_min_url = 'http://code.jquery.com/jquery-1.8.3.min.js'
 
 # bootstrap
-bootstrapjs_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
-bootstrapjsmin_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
-bootstrapcss_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
-
+bootstrap_js_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
+bootstrap_js_min_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
+bootstrap_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
+bootstrap_responsive_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css'
 
