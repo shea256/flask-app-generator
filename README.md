@@ -1,21 +1,21 @@
 # Flask App Generator
 
-Flask App Generator gives you the power to **autogenerate a Flask app in seconds**.
+Flask App Generator gives you the power to autogenerate a Flask app in seconds.
 
-Further, you'll have the option of:
+The application you generate will be laid out in one of the following formats:
 
-+ automatically generating a virtual environment and installing packages inside it
-+ hooking into a github repo
-+ initializing a Heroku application and deploying to it
++ a 'basic' app, with just a single python file as the command center
++ a 'large' app, organized as a package and separated out into distinct, specialized python files
+
+Beyond app creation, you'll have the ability to automatically:
+
++ generate a virtual environment and install packages inside it
++ hook into a github repo
++ initialize a Heroku application and deploy to it
 
 (it's like hackathon magic)
 
-The application you generate can be laid out in one of the following formats:
-
-+ a 'basic' application, with just a single python file as your command center
-+ a 'large' application, organized as a package and separated out into distinct, specialized python files
-
-Enjoy, and feel free to contribute or provide feedback on the project.
+Enjoy, and please don't hesitate to provide feedback regarding or contribute to the project.
 
 ### How to Use
 
