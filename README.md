@@ -1,8 +1,8 @@
 # Flask App Generator
 
-With this python script, you can autogenerate a Flask application in seconds.
+Flask App Generator gives you the power to **autogenerate a Flask app in seconds**.
 
-Additionally, you have the option of:
+Further, you'll have the option of:
 
 + automatically generating a virtual environment and installing packages inside it
 + hooking into a github repo
@@ -10,29 +10,32 @@ Additionally, you have the option of:
 
 (it's like hackathon magic)
 
-The application you generate can be laid out as one of the following:
+The application you generate can be laid out in one of the following formats:
 
 + a 'basic' application, with just a single python file as your command center
 + a 'large' application, organized as a package and separated out into distinct, specialized python files
 
-## How to Use
+Enjoy, and feel free to contribute or provide feedback on the project.
 
+### How to Use
+
++ Make sure you have the necessary packages installed
 + Edit settings.py
-+ run "python generate.py [appname]"
++ Run: "python generate.py [appname]"
 
-## Required packages
+### Required packages
 
 + python
 + pip
 + git
 
-## Optional packages
+### Optional packages
 
 + heroku toolbelt
 + virtualenv
 + virtualenvwrapper
 
-## Help
+### Help
 
 **usage:** generate.py [-h] [--githubrepo GITHUB_REPO] [--herokuapp HEROKU_APP]
                    [--venvname VIRTUALENV_NAME] [--push] [--large]
