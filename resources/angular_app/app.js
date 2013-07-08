@@ -1,0 +1,23 @@
+'use strict';
+
+angular.module('[[APP_NAME]]', [])
+	.config(['$routeProvider', function($routeProvider) {
+		$routeProvider
+		.when('/', {
+			templateUrl: 'static/partials/landing.html',
+			controller: IndexController
+		})
+		.when('/about', {
+			templateUrl: 'static/partials/about.html',
+			controller: AboutController
+		})
+		.otherwise({
+			templateUrl: 'static/partials/404.html',
+			controller: PageNotFoundController
+		})
+		;
+	}])
+	.config(['$locationProvider', function($locationProvider) {
+		$locationProvider.html5Mode(true);
+	}])
+;

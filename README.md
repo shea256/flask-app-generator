@@ -38,7 +38,7 @@ Enjoy, and please don't hesitate to contribute to the project or provide feedbac
 ### Help
 
 **usage:** generate.py [-h] [--githubrepo GITHUB_REPO] [--herokuapp HEROKU_APP]
-                   [--venvname VIRTUALENV_NAME] [--push] [--large]
+                   [--venvname VIRTUALENV_NAME] [--push] [--large] [--angular]
                    appname
 
 **Autogenerate a Flask app**
@@ -53,3 +53,5 @@ Enjoy, and please don't hesitate to contribute to the project or provide feedbac
 + --venvname VIRTUALENV_NAME : the name of the virtualenv for the app
 + --push : automatically push to github and heroku when app has been created
 + --large : organize the app in a way that is superior for larger applications (in the form of a package instead of a module)
++ --angular : organize the app as a flask backend with an angularjs frontend
+

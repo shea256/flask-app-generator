@@ -11,14 +11,14 @@ app.config.update(
 )
 
 # controllers
-@app.route("/")
+@app.route('/')
 def index():
 	return render_template('index.html')
 
 # special file handlers
 @app.route('/favicon.ico')
 def favicon():
-	return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
+	return send_from_directory(os.path.join(app.root_path, 'static'), 'img/favicon.ico')
 
 # error handlers
 @app.errorhandler(404)
@@ -26,6 +26,6 @@ def page_not_found(e):
 	return render_template('404.html'), 404
 
 # server launchpad
-if __name__ == "__main__":
-	port = int(os.environ.get("PORT", 5000))
+if __name__ == '__main__':
+	port = int(os.environ.get('PORT', 5000))
 	app.run(host='0.0.0.0', port=port)

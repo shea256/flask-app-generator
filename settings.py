@@ -28,3 +28,9 @@ bootstrap_js_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.js'
 bootstrap_js_min_url = 'http://twitter.github.io/bootstrap/assets/js/bootstrap.min.js'
 bootstrap_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap.css'
 bootstrap_responsive_css_url = 'http://twitter.github.io/bootstrap/assets/css/bootstrap-responsive.css'
+
+# angular
+angularjs_url = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js'
+angularjs_min_url = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js'
+angularjs_resource_url = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js'
+angularjs_resource_min_url = 'https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js'

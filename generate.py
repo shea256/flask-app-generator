@@ -10,7 +10,121 @@ from settings import *
 def enum(**enums):
 	return type('Enum', (), enums)
 
-AppTypes = enum(BASIC=1, LARGE=2)
+AppTypes = enum(BASIC=1, LARGE=2, ANGULAR=3)
+
+def get_filemap(app_type, app_name):
+	if app_type == AppTypes.BASIC:
+		filemap = {
+			'dirs': [
+				'static/css',
+				'static/img',
+				'static/js',
+				'templates',
+			],
+			'remote_files': [
+				(bootstrap_css_url, 'static/css/bootstrap.css'),
+				(bootstrap_responsive_css_url, 'static/css/bootstrap-responsive.css'),
+				(bootstrap_js_url, 'static/js/bootstrap.js'),
+				(bootstrap_js_min_url, 'static/js/bootstrap.min.js'),
+				(jquery_url, 'static/js/jquery.js'),
+				(jquery_min_url, 'static/js/jquery.min.js'),
+				(favicon_url, 'static/img/favicon.ico'),
+			],
+			'local_files': [
+				('README.md', 'README.md'),
+				('.gitignore', '.gitignore'),
+				('Procfile', 'Procfile'),
+				('basic_app/app.py', 'app.py'),
+				('templates/base.html', 'templates/base.html'),
+				('templates/index.html', 'templates/index.html'),
+				('templates/404.html', 'templates/404.html'),
+			],
+		}
+		return filemap
+	elif app_type == AppTypes.LARGE:
+		filemap = {
+			'dirs': [
+				app_name,
+				app_name + '/static/css',
+				app_name + '/static/img',
+				app_name + '/static/js',
+				app_name + '/templates',
+			],
+			'remote_files': [
+				(bootstrap_css_url, app_name + '/static/css/bootstrap.css'),
+				(bootstrap_responsive_css_url, app_name + '/static/css/bootstrap-responsive.css'),
+				(bootstrap_js_url, app_name + '/static/js/bootstrap.js'),
+				(bootstrap_js_min_url, app_name + '/static/js/bootstrap.min.js'),
+				(jquery_url, app_name + '/static/js/jquery.js'),
+				(jquery_min_url, app_name + '/static/js/jquery.min.js'),
+				(favicon_url, app_name + '/static/img/favicon.ico'),
+			],
+			'local_files': [
+				('README.md', 'README.md'),
+				('.gitignore', '.gitignore'),
+				('Procfile', 'Procfile'),
+				('large_app/runserver.py', 'runserver.py'),
+				('large_app/__init__.py', app_name + '/__init__.py'),
+				('large_app/core.py', app_name + '/core.py'),
+				('large_app/models.py', app_name + '/models.py'),
+				('large_app/settings.py', app_name + '/settings.py'),
+				('large_app/controllers.py', app_name + '/controllers.py'),
+				('templates/base.html', app_name + '/templates/base.html'),
+				('templates/index.html', app_name + '/templates/index.html'),
+				('templates/404.html', app_name + '/templates/404.html'),
+			],
+		}
+		return filemap
+	elif app_type == AppTypes.ANGULAR:
+		filemap = {
+			'dirs': [
+				app_name,
+				app_name + '/static/css',
+				app_name + '/static/img',
+				app_name + '/static/js',
+				app_name + '/static/lib',
+				app_name + '/static/lib/angular',
+				app_name + '/static/lib/jquery',
+				app_name + '/static/lib/bootstrap',
+				app_name + '/static/partials',
+				app_name + '/templates',
+			],
+			'remote_files': [
+				(bootstrap_css_url, app_name + '/static/css/bootstrap.css'),
+				(bootstrap_responsive_css_url, app_name + '/static/css/bootstrap-responsive.css'),
+				(favicon_url, app_name + '/static/img/favicon.ico'),
+				(bootstrap_js_url, app_name + '/static/lib/bootstrap/bootstrap.js'),
+				(bootstrap_js_min_url, app_name + '/static/lib/bootstrap/bootstrap.min.js'),
+				(jquery_url, app_name + '/static/lib/jquery/jquery.js'),
+				(jquery_min_url, app_name + '/static/lib/jquery/jquery.min.js'),
+				(angularjs_url, app_name + '/static/lib/angular/angular.js'),
+				(angularjs_resource_url, app_name + '/static/lib/angular/angular-resource.js'),
+				(angularjs_min_url, app_name + '/static/lib/angular/angular.min.js'),
+				(angularjs_resource_min_url, app_name + '/static/lib/angular/angular-resource.min.js'),
+			],
+			'local_files': [
+				('README.md', 'README.md'),
+				('.gitignore', '.gitignore'),
+				('Procfile', 'Procfile'),
+				('large_app/runserver.py', 'runserver.py'),
+				('large_app/__init__.py', app_name + '/__init__.py'),
+				('large_app/core.py', app_name + '/core.py'),
+				('large_app/models.py', app_name + '/models.py'),
+				('large_app/settings.py', app_name + '/settings.py'),
+				('angular_app/controllers.py', app_name + '/controllers.py'),
+				('angular_app/index.html', app_name + '/templates/index.html'),
+				('angular_app/main.css', app_name + '/static/css/main.css'),
+				('angular_app/app.js', app_name + '/static/js/app.js'),
+				('angular_app/controllers.js', app_name + '/static/js/controllers.js'),
+				('angular_app/services.js', app_name + '/static/js/services.js'),
+				('angular_app/404.html', app_name + '/static/partials/404.html'),
+				('angular_app/about.html', app_name + '/static/partials/about.html'),
+				('angular_app/landing.html', app_name + '/static/partials/landing.html'),
+			],
+		}
+		return filemap
+	else:
+		raise Exception('That app type is not supported!')
 
 def random_binascii(n):
 	return binascii.b2a_hex(os.urandom(n))
@@ -61,6 +175,8 @@ class AppCreator(object):
 
 		if app_type == AppTypes.LARGE:
 			self.runserver_filename = 'runserver'
+		elif app_type == AppTypes.ANGULAR:
+			self.runserver_filename = 'runserver'
 		else:
 			self.runserver_filename = 'app'
 
@@ -73,50 +189,19 @@ class AppCreator(object):
 		os.system('git init')
 
 	def build_app(self):
-		filenames = ['README.md', '.gitignore', 'Procfile']
-		self.create_files(filenames, '')
-		
-		if self.app_type == AppTypes.BASIC:
-			self.create_basic_app_files()
-		elif self.app_type == AppTypes.LARGE:
-			self.create_large_app_files()
+		#filenames = ['README.md', '.gitignore', 'Procfile']
+		#self.create_files(filenames, '')
 
-	def create_basic_app_files(self):
-		# create python files
-		filenames = ['app.py']
-		self.create_files(filenames, 'basic_app/')
+		filemap = get_filemap(self.app_type, self.app_name)
 
-		self.create_template_files()
-		
-		self.grab_static_files()
-
-	def create_large_app_files(self):
-		filenames = ['runserver.py']
-		self.create_files(filenames, 'large_app/')
-
-		os.mkdir(self.app_name)
-		self.destination_path = self.app_name + '/'
-
-		self.runserver_filename = 'runserver'
-
-		filenames = ['__init__.py', 'controllers.py', 'core.py',
-			'models.py', 'settings.py']
-		self.create_files(filenames, 'large_app/')
-
-		self.create_template_files()
-		
-		self.grab_static_files()
-
-	def create_files(self, filenames, resource_dir, dest_dir=''):
-		for filename in filenames:
-			with open(self.destination_path + dest_dir + filename, 'w') as f:
-				filedata = self.render_filedata(filename, resource_dir)
+		for d in filemap['dirs']:
+			os.makedirs(d)
+		for fd in filemap['local_files']:
+			with open(self.destination_path + fd[1], 'w') as f:
+				filedata = self.render_filedata(fd[0], '')
 				f.write(filedata)
-
-	def create_template_files(self):
-		os.mkdir(self.destination_path + 'templates')
-		filenames = ['base.html', 'index.html', '404.html']
-		self.create_files(filenames, 'templates/', dest_dir='templates/')
+		for fd in filemap['remote_files']:
+			os.system('curl ' + fd[0] + ' > ' + fd[1])
 
 	def load_resource(self, filename, resource_dir):
 		filepath = self.resource_path + resource_dir + filename
@@ -141,23 +226,6 @@ class AppCreator(object):
 		filedata = make_replacements(filedata, replacements)
 		return filedata
 
-	def grab_static_files(self):
-		dirs = ['static/css', 'static/js', 'static/img', 'static/ico']
-		dirs = [(self.destination_path + d) for d in dirs]
-		make_dirs(dirs)
-
-		files = [
-			(bootstrap_css_url, 'static/css/bootstrap.css'),
-			(bootstrap_responsive_css_url, 'static/css/bootstrap-responsive.css'),
-			(bootstrap_js_url, 'static/js/bootstrap.js'),
-			(bootstrap_js_min_url, 'static/js/bootstrap.min.js'),
-			(jquery_url, 'static/js/jquery.js'),
-			(jquery_min_url, 'static/js/jquery.min.js'),
-			(favicon_url, 'static/ico/favicon.ico'),
-		]
-		files = [(url, self.destination_path + destname) for url, destname in files]
-		curl_files(files)
-
 #---------------------------------------------------------------------
 # Main
 #---------------------------------------------------------------------
@@ -171,6 +239,7 @@ def main():
 	parser.add_argument('--venvname', dest='virtualenv_name', help='the name of the virtualenv for the app')
 	parser.add_argument('--push', dest='push', help='automatically push to github and heroku when app has been created', action='store_true')
 	parser.add_argument('--large', dest='app_type', action='store_const', const=AppTypes.LARGE)
+	parser.add_argument('--angular', dest='app_type', action='store_const', const=AppTypes.ANGULAR)
 	args = parser.parse_args()
 
 	# take in additional arguments from settings
@@ -178,10 +247,11 @@ def main():
 	args.virtualenvwrapper_path = virtualenvwrapper_path
 
 	# create app files
-	if not args.app_type:
-		app_creator = AppCreator(args.appname, AppTypes.BASIC)
-	else:
+	if args.app_type:
 		app_creator = AppCreator(args.appname, args.app_type)
+	else:
+		app_creator = AppCreator(args.appname, AppTypes.BASIC)
+		
 	print ''
 	app_creator.init_app()
 	print ''
