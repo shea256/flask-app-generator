@@ -6,6 +6,7 @@ The application you generate will be laid out in one of the following formats:
 
 + a 'basic' app, with just a single python file as the command center
 + a 'large' app, organized as a package and separated out into distinct, specialized python files
++ a 'flask-angular' app, with a Flask API and an AngularJS front-end
 
 Beyond app creation, you'll have the ability to automatically:
 
@@ -53,5 +54,5 @@ Enjoy, and please don't hesitate to contribute to the project or provide feedbac
 + --venvname VIRTUALENV_NAME : the name of the virtualenv for the app
 + --push : automatically push to github and heroku when app has been created
 + --large : organize the app in a way that is superior for larger applications (in the form of a package instead of a module)
-+ --angular : organize the app as a flask backend with an angularjs frontend
++ --angular : organize the app as a Flask API with an angularjs front-end
 
