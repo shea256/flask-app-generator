@@ -106,11 +106,12 @@ def get_filemap(app_type, app_name):
 				('README.md', 'README.md'),
 				('.gitignore', '.gitignore'),
 				('Procfile', 'Procfile'),
-				('large_app/runserver.py', 'runserver.py'),
-				('large_app/__init__.py', app_name + '/__init__.py'),
-				('large_app/core.py', app_name + '/core.py'),
-				('large_app/models.py', app_name + '/models.py'),
-				('large_app/settings.py', app_name + '/settings.py'),
+				('angular_app/runserver.py', 'runserver.py'),
+				('angular_app/manage.py', 'manage.py'),
+				('angular_app/__init__.py', app_name + '/__init__.py'),
+				('angular_app/core.py', app_name + '/core.py'),
+				('angular_app/models.py', app_name + '/models.py'),
+				('angular_app/settings.py', app_name + '/settings.py'),
 				('angular_app/controllers.py', app_name + '/controllers.py'),
 				('angular_app/index.html', app_name + '/templates/index.html'),
 				('angular_app/404.html', app_name + '/templates/404.html'),
@@ -257,6 +258,10 @@ def main():
 	print ''
 	app_creator.build_app()
 	print '\n'
+
+	if args.app_type == AppTypes.ANGULAR:
+		os.system('python manage.py create_db')
+		print 'Creating db...\n'
 
 	# configure github
 	if args.github_user and args.github_repo:

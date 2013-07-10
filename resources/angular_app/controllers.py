@@ -22,3 +22,7 @@ def page_not_found(e):
 def index():
 	return make_response(open('[[APP_NAME]]/templates/index.html').read())
 
+# API
+from [[APP_NAME]].core import api_manager
+from [[APP_NAME]].models import Post
+api_manager.create_api(Post, methods=['GET', 'POST'])
