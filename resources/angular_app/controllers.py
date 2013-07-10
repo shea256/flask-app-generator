@@ -11,9 +11,14 @@ from [[APP_NAME]] import app
 def favicon():
 	return send_from_directory(os.path.join(app.root_path, 'static'), 'img/favicon.ico')
 
+# 404 error handler
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 # catch-all url handler
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def index(path):
+@app.route('/')
+@app.route('/about')
+def index():
 	return make_response(open('[[APP_NAME]]/templates/index.html').read())
 

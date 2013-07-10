@@ -12,8 +12,7 @@ angular.module('[[APP_NAME]]', [])
 			controller: AboutController
 		})
 		.otherwise({
-			templateUrl: 'static/partials/404.html',
-			controller: PageNotFoundController
+			redirectTo: '/'
 		})
 		;
 	}])
