@@ -38,6 +38,8 @@ def get_filemap(app_type, app_name):
 				('templates/base.html', 'templates/base.html'),
 				('templates/index.html', 'templates/index.html'),
 				('templates/404.html', 'templates/404.html'),
+				('templates/about.html', 'templates/about.html'),
+				('static/css/main.css', 'static/css/main.css'),
 			],
 		}
 		return filemap
@@ -71,7 +73,9 @@ def get_filemap(app_type, app_name):
 				('large_app/controllers.py', app_name + '/controllers.py'),
 				('templates/base.html', app_name + '/templates/base.html'),
 				('templates/index.html', app_name + '/templates/index.html'),
+				('templates/about.html', app_name + '/templates/about.html'),
 				('templates/404.html', app_name + '/templates/404.html'),
+				('static/css/main.css', app_name + '/static/css/main.css'),
 			],
 		}
 		return filemap
@@ -115,7 +119,7 @@ def get_filemap(app_type, app_name):
 				('angular_app/controllers.py', app_name + '/controllers.py'),
 				('angular_app/index.html', app_name + '/templates/index.html'),
 				('angular_app/404.html', app_name + '/templates/404.html'),
-				('angular_app/main.css', app_name + '/static/css/main.css'),
+				('static/css/main.css', app_name + '/static/css/main.css'),
 				('angular_app/app.js', app_name + '/static/js/app.js'),
 				('angular_app/controllers.js', app_name + '/static/js/controllers.js'),
 				('angular_app/services.js', app_name + '/static/js/services.js'),

@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
 	{% block head %}
-	<title>{{ site_name }}{% block title %}{% endblock %}</title>
+	<title>{% block title %}{{ site_name }}{% endblock %}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -18,7 +18,7 @@
 	<meta property="og:description" content=""/>
 
 	<link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-	<style> body { padding-top: 60px; } </style>
+	<link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
 	<!-- SUPPORT FOR IE6-8 OF HTML5 ELEMENTS -->
 	<!--[if lt IE 9]>
@@ -33,7 +33,7 @@
   <body>
 
 	{% block navbar %}
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-static-top">
 		<div class="navbar-inner">
 			<div class="container">
 			  <a class="brand" href="/">{{ site_name }}</a>
@@ -52,7 +52,7 @@
 	{% endblock %}
 
 	<div class="container page">
-		<div class="content">
+		<div class="content main">
 		  {% block content %}
 		  {% endblock %}
 		</div>
@@ -60,8 +60,14 @@
 		<hr>
 
 		{% block footer %}
-		<footer class="footer">
-			<p>&copy; {{ site_name }}</p>
+		<footer id="footer" class="footer">
+			<div class="footer-left">
+				<a href="/about">About</a> |
+				<a href="/">Home</a>
+			</div>
+			<div class="footer-right">
+				<span>&copy; 2013 {{ site_name }}</span>
+			</div>
 		</footer>
 		{% endblock %}
 	</div>
